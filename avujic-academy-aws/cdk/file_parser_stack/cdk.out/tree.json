@@ -1,0 +1,346 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.69"
+        }
+      },
+      "avujic-cdk-stack-task-2": {
+        "id": "avujic-cdk-stack-task-2",
+        "path": "avujic-cdk-stack-task-2",
+        "children": {
+          "avujic-academy-s3-cdk": {
+            "id": "avujic-academy-s3-cdk",
+            "path": "avujic-cdk-stack-task-2/avujic-academy-s3-cdk",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-s3-cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-s3-cdk"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              },
+              "Notifications": {
+                "id": "Notifications",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-s3-cdk/Notifications",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "avujic-cdk-stack-task-2/avujic-academy-s3-cdk/Notifications/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.22.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.69"
+                }
+              },
+              "AllowBucketNotificationsToavujiccdkstacktask2avujicacademylambdacdk614201DE": {
+                "id": "AllowBucketNotificationsToavujiccdkstacktask2avujicacademylambdacdk614201DE",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-s3-cdk/AllowBucketNotificationsToavujiccdkstacktask2avujicacademylambdacdk614201DE",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "avujicacademylambdacdk134D4B0B",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "s3.amazonaws.com",
+                    "sourceAccount": "456582705970",
+                    "sourceArn": {
+                      "Fn::GetAtt": [
+                        "avujicacademys3cdkD1C87035",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-dynamo-cdk": {
+            "id": "avujic-academy-dynamo-cdk",
+            "path": "avujic-cdk-stack-task-2/avujic-academy-dynamo-cdk",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-dynamo-cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    },
+                    "tableName": "avujic-academy-dynamo-cdk"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.22.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-dynamo-cdk/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-lambda-role": {
+            "id": "avujic-academy-lambda-role",
+            "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-role",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Resource",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-lambda-cdk": {
+            "id": "avujic-academy-lambda-cdk",
+            "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-cdk",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-cdk/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-cdk/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.22.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-cdk/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.22.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.22.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-cdk-stack-task-2/avujic-academy-lambda-cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-456582705970-eu-central-1",
+                      "s3Key": "1948e17c6a36b7a884b3ee8e16bb212bcdf16c9a2b7f673060617066fbc27bfe.zip"
+                    },
+                    "role": "arn:aws:iam::456582705970:role/avujic-academy-lambda-role",
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "avujicacademydynamocdkCD230BCA"
+                        }
+                      }
+                    },
+                    "functionName": "avujic-academy-lambda-cdk",
+                    "handler": "lambda_function.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.22.0"
+            }
+          },
+          "BucketNotificationsHandler050a0587b7544547bf325f094a3db834": {
+            "id": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834",
+            "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.22.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:PutBucketNotification",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+                            "roles": [
+                              {
+                                "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.22.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.22.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.22.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "avujic-cdk-stack-task-2/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "avujic-cdk-stack-task-2/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.22.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.22.0"
+    }
+  }
+}

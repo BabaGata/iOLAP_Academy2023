@@ -1,0 +1,94 @@
+{
+  "version": "17.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "avujic-AcademyS3Stack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "avujic-AcademyS3Stack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "avujic-AcademyS3Stack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://456582705970/eu-central-1",
+      "properties": {
+        "templateFile": "avujic-AcademyS3Stack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-deploy-role-456582705970-eu-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-cfn-exec-role-456582705970-eu-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-456582705970-eu-central-1/5eb533c5d5e7eeab86fdb451dd82681f00756390ad70e37dc9aa02d5014d79de.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "avujic-AcademyS3Stack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-lookup-role-456582705970-eu-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "avujic-AcademyS3Stack.assets"
+      ],
+      "metadata": {
+        "/avujic-AcademyS3Stack/avujic-academy-cdk-1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademycdk13F616901"
+          }
+        ],
+        "/avujic-AcademyS3Stack/avujic-academy-cdk-2/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademycdk2447C64C1"
+          }
+        ],
+        "/avujic-AcademyS3Stack/avujic-academy-cdk-3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademycdk3A8990D63"
+          }
+        ],
+        "/avujic-AcademyS3Stack/avujic-academy-cdk-4/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademycdk4B3DE482E"
+          }
+        ],
+        "/avujic-AcademyS3Stack/avujic-academy-cdk-5/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademycdk5536C4089"
+          }
+        ],
+        "/avujic-AcademyS3Stack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/avujic-AcademyS3Stack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/avujic-AcademyS3Stack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "avujic-AcademyS3Stack"
+    }
+  }
+}

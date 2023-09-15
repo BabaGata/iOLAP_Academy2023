@@ -1,0 +1,190 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  S3BucketData:
+    Description: s3 bucket for landing and datalake
+    Type: String
+    Default: avujic-academy-data
+  S3BucketScripts:
+    Description: s3 bucket for scripts
+    Type: String
+    Default: avujic-academy-scripts
+  DynamoDBTableGlobalName:
+    Description: DynamoDB table for global configuration of IMDB data
+    Type: String
+    Default: avujic-academy-global
+  DynamoDBTableJobsName:
+    Description: DynamoDB table for configuration for each table of IMDB data
+    Type: String
+    Default: avujic-academy-jobs
+  StateMachineName:
+    Description: Name of the statemachine
+    Type: String
+    Default: avujic-academy-statemachine
+  StateMachineRoleName:
+    Description: Name of the role of the statemachine
+    Type: String
+    Default: avujic-academy-statemachine
+  StateMachineTriggerRoleName:
+    Description: Name of the trigger for statemachine
+    Type: String
+    Default: avujic-academy-statemachine-trigger
+  LambdaLandingName:
+    Description: Name of the lambda landing function
+    Type: String
+    Default: avujic-academy-lambda-landing
+  LambdaLandingRoleName:
+    Description: Name od the role for the lambda landing function
+    Type: String
+    Default: avujic-academy-lambda-role
+  LambdaLandingUploadUNIXT:
+    Description: Timestamp for the location of latest lambda landing function on s3
+    Type: String
+
+Resources:
+  AvujicLambdaLandingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref LambdaLandingRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "AccessDynamoDBTables"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "dynamodb:GetItem"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:Query"
+                  - "dynamodb:Scan"
+                Resource:
+                  - !Sub "arn:aws:dynamodb:eu-central-1:456582705970:table/${DynamoDBTableGlobalName}"
+                  - !Sub "arn:aws:dynamodb:eu-central-1:456582705970:table/${DynamoDBTableJobsName}"
+        - PolicyName: "AccessS3Buckets"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3BucketData}/*"
+                  - !Sub "arn:aws:s3:::${S3BucketScripts}/*"
+                  - "arn:aws:s3:::avujic-academy-aws/*"
+
+  AvujicAcademyLambdaLanding:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Ref LambdaLandingName
+      Runtime: 'python3.11'
+      Role: !GetAtt AvujicLambdaLandingRole.Arn
+      Handler: !Sub '${LambdaLandingName}.lambda_handler'
+      Layers: ['arn:aws:lambda:eu-central-1:336392948345:layer:AWSSDKPandas-Python311:1']
+      Code:
+        S3Bucket: !Ref S3BucketScripts
+        S3Key: !Sub lambda/${LambdaLandingUploadUNIXT}/${LambdaLandingName}.zip
+      Description: 'Statemachine lambda function for IMDB landing bucket.'
+      TracingConfig:
+        Mode: 'Active'
+      Timeout: 900
+      MemorySize: 128
+      PackageType: 'Zip'
+      Environment:
+        Variables:
+          S3_BUCKET_DATA: !Ref S3BucketData
+          DYNAMO_GLOBAL: !Ref DynamoDBTableGlobalName
+          DYNAMO_JOBS: !Ref DynamoDBTableJobsName
+
+  AvujicStateMachineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref StateMachineRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "InvokeLambdaFunction"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action: "lambda:InvokeFunction"
+                Resource:
+                  - !GetAtt AvujicAcademyLambdaLanding.Arn
+        - PolicyName: "AccessDynamoDBTables"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "dynamodb:GetItem"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:Query"
+                  - "dynamodb:Scan"
+                Resource:
+                  - !Sub "arn:aws:dynamodb:eu-central-1:456582705970:table/${DynamoDBTableGlobalName}"
+                  - !Sub "arn:aws:dynamodb:eu-central-1:456582705970:table/${DynamoDBTableJobsName}"
+        - PolicyName: "AccessS3Buckets"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3BucketData}/*"
+                  - !Sub "arn:aws:s3:::${S3BucketScripts}/*"
+                  - "arn:aws:s3:::avujic-academy-aws/*"
+  
+  AvujicAcademyTriggerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref StateMachineTriggerRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sts:AssumeRole
+  
+  AvujicAcademyStateMachine:
+    Type: 'AWS::StepFunctions::StateMachine'
+    Properties:
+      StateMachineName: !Ref StateMachineName
+      RoleArn: !GetAtt AvujicStateMachineRole.Arn
+      DefinitionS3Location:
+        Bucket: !Ref S3BucketScripts
+        Key: !Sub 'statemachine/${StateMachineName}.json'
+      DefinitionSubstitutions:
+        LambdaLanding: !Ref LambdaLandingName
+        DynamoDBTableJobs: !Ref DynamoDBTableJobsName
+    
+  ScheduledRule: 
+    Type: 'AWS::Events::Rule'
+    DeletionPolicy: Delete
+    Properties: 
+      Description: 'Run statemachine at 8:00'
+      Name: !Sub '${StateMachineName}-trigger'
+      ScheduleExpression: 'cron(0 8 * * ? *)'
+      RoleArn: !GetAtt AvujicAcademyTriggerRole.Arn
+      Targets:
+        - 
+          Arn: !GetAtt AvujicAcademyStateMachine.Arn
+          Id: 'IDAvujicAcademyStateMachine'
+          RoleArn: !GetAtt AvujicStateMachineRole.Arn

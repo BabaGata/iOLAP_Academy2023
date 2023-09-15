@@ -1,0 +1,20 @@
+{
+  "version": "17.0.0",
+  "files": {
+    "5eb533c5d5e7eeab86fdb451dd82681f00756390ad70e37dc9aa02d5014d79de": {
+      "source": {
+        "path": "avujic-AcademyS3Stack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "456582705970-eu-central-1": {
+          "bucketName": "cdk-hnb659fds-assets-456582705970-eu-central-1",
+          "objectKey": "5eb533c5d5e7eeab86fdb451dd82681f00756390ad70e37dc9aa02d5014d79de.json",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-file-publishing-role-456582705970-eu-central-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

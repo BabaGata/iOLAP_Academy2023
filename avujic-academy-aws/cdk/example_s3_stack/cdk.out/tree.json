@@ -1,0 +1,169 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.69"
+        }
+      },
+      "avujic-AcademyS3Stack": {
+        "id": "avujic-AcademyS3Stack",
+        "path": "avujic-AcademyS3Stack",
+        "children": {
+          "avujic-academy-cdk-1": {
+            "id": "avujic-academy-cdk-1",
+            "path": "avujic-AcademyS3Stack/avujic-academy-cdk-1",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-AcademyS3Stack/avujic-academy-cdk-1/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-cdk-1"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-cdk-2": {
+            "id": "avujic-academy-cdk-2",
+            "path": "avujic-AcademyS3Stack/avujic-academy-cdk-2",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-AcademyS3Stack/avujic-academy-cdk-2/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-cdk-2"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-cdk-3": {
+            "id": "avujic-academy-cdk-3",
+            "path": "avujic-AcademyS3Stack/avujic-academy-cdk-3",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-AcademyS3Stack/avujic-academy-cdk-3/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-cdk-3"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-cdk-4": {
+            "id": "avujic-academy-cdk-4",
+            "path": "avujic-AcademyS3Stack/avujic-academy-cdk-4",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-AcademyS3Stack/avujic-academy-cdk-4/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-cdk-4"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "avujic-academy-cdk-5": {
+            "id": "avujic-academy-cdk-5",
+            "path": "avujic-AcademyS3Stack/avujic-academy-cdk-5",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "avujic-AcademyS3Stack/avujic-academy-cdk-5/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "avujic-academy-cdk-5"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.22.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "avujic-AcademyS3Stack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "avujic-AcademyS3Stack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.22.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.69"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.22.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.22.0"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+Parameters:
+  LambdaFunction:
+    Description: Name of the lambda function
+    Type: String
+    Default: avujic-academy-lambda-cloudformation
+
+ScheduledRule: 
+  Type: AWS::Events::Rule
+  Properties: 
+    Description: "ScheduledRule"
+    ScheduleExpression: "cron(0 8 * * MON *)"
+    State: "ENABLED"
+    Targets: 
+      - 
+        Arn: 
+          Fn::GetAtt: 
+            - "LambdaFunction"
+            - "Arn"
+        Id: "AvujicAcademyLambdaCICD"
+PermissionForEventsToInvokeLambda: 
+  Type: AWS::Lambda::Permission
+  Properties: 
+    FunctionName: !Ref LambdaFunction
+    Action: "lambda:InvokeFunction"
+    Principal: "events.amazonaws.com"
+    SourceArn: 
+      Fn::GetAtt: 
+        - "ScheduledRule"
+        - "Arn"

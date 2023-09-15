@@ -1,0 +1,120 @@
+{
+  "version": "17.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "avujic-cdk-stack-task-2.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "avujic-cdk-stack-task-2.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "avujic-cdk-stack-task-2": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://456582705970/eu-central-1",
+      "properties": {
+        "templateFile": "avujic-cdk-stack-task-2.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-deploy-role-456582705970-eu-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-cfn-exec-role-456582705970-eu-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-456582705970-eu-central-1/f4b9dccf4c8469cd88b7711a54d22f54d06def71bdf336fb46f62b002590238b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "avujic-cdk-stack-task-2.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::456582705970:role/cdk-hnb659fds-lookup-role-456582705970-eu-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "avujic-cdk-stack-task-2.assets"
+      ],
+      "metadata": {
+        "/avujic-cdk-stack-task-2/avujic-academy-s3-cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademys3cdkD1C87035"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/avujic-academy-s3-cdk/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademys3cdkNotificationsB57ED59B"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/avujic-academy-s3-cdk/AllowBucketNotificationsToavujiccdkstacktask2avujicacademylambdacdk614201DE": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademys3cdkAllowBucketNotificationsToavujiccdkstacktask2avujicacademylambdacdk614201DEF1A5F04E"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/avujic-academy-dynamo-cdk": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "avujicacademydynamocdkCD230BCA"
+            }
+          }
+        ],
+        "/avujic-cdk-stack-task-2/avujic-academy-dynamo-cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademydynamocdkCD230BCA"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/avujic-academy-lambda-cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "avujicacademylambdacdk134D4B0B"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/avujic-cdk-stack-task-2/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "avujic-cdk-stack-task-2"
+    }
+  }
+}

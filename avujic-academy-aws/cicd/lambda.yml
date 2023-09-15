@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  S3BucketScripts:
+    Description: S3 bucket with scripts
+    Type: String
+    Default: avujic-academy-scripts
+  LambdaLandingUploadUNIXT:
+    Description: Timestamp for the location of latest lambda function on s3
+    Type: String
+  LambdaFunctionName:
+    Description: Name of the lambda function
+    Type: String
+    Default: avujic-academy-lambda-cloudformation
+
+Resources:
+  AvujicAcademyLambdaCICD:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Runtime: python3.11
+      Role: arn:aws:iam::456582705970:role/avujic-academy-lambda-role
+      Handler: avujic-academy-lambda-cloudformation.lambda_handler
+      Code:
+        S3Bucket: !Ref S3BucketScripts
+        S3Key: !Sub lambda/${LambdaLandingUploadUNIXT}/${LambdaFunctionName}.zip
+      Description: Populate cicd-avujic-academy-global and cicd-avujic-academy-jobs DynamoDB tables.
+      TracingConfig:
+        Mode: Active

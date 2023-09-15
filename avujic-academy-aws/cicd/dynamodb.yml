@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  DynamoDBGlobal:
+    Description: DynamoDB table for global information of IMDB data
+    Type: String
+    Default: avujic-academy-global
+  DynamoDBJobs:
+    Description: DynamoDB table for information in each table of IMDB data
+    Type: String
+    Default: avujic-academy-jobs
+
+Resources: 
+  AvujicAcademyGlobalDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref DynamoDBGlobal
+      AttributeDefinitions:
+        - AttributeName: "name"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "name"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+          
+  AvujicAcademyJobsDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref DynamoDBJobs
+      AttributeDefinitions:
+        - AttributeName: "table_name"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "table_name"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

@@ -1,0 +1,32 @@
+[
+    {
+        "table_name":"title_ratings",
+        "uri": "/dataset/title_ratings",
+        "min_ingestion_dttm": "20230824T060209.979190"
+    },
+    {
+        "table_name":"title_crew",
+        "uri": "/dataset/title_crew",
+        "min_ingestion_dttm": "20230822T060129.545161"
+    },
+    {
+        "table_name":"name_basics",
+        "uri": "/dataset/name_basics",
+        "min_ingestion_dttm": "20230822T064740.148903"
+    },
+    {
+        "table_name":"title_basics",
+        "uri": "/dataset/title_basics",
+        "min_ingestion_dttm": "20230814T065724.125160"
+    },
+    {
+        "table_name":"title_principals",
+        "uri": "/dataset/title_principals",
+        "min_ingestion_dttm": "20230813T070004.885042"
+    },
+    {
+        "table_name":"title_episode",
+        "uri": "/dataset/title_episode",
+        "min_ingestion_dttm": "20230807T065952.796021"
+    }
+]

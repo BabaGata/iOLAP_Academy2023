@@ -1,0 +1,193 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  S3BucketData:
+    Description: s3 bucket for landing and datalake
+    Type: String
+    Default: avujic-academy-data
+  S3BucketScripts:
+    Description: s3 bucket for scripts
+    Type: String
+    Default: avujic-academy-scripts
+  GlueJobName:
+    Description: Name for glue job
+    Type: String
+    Default: avujic-academy-glue
+  GlueJobRoleName:
+    Description: Name for glue role
+    Type: String
+    Default: avujic-academy-glue-role
+  GlueDatabaseLandingName:
+    Description: Name of glue landing database
+    Type: String
+    Default: avujic-academy-landing
+  GlueDatabaseDatalakeName:
+    Description: Name of glue datalake database
+    Type: String
+    Default: avujic-academy-datalake
+  GlueCrawlerLandingTriggerName:
+    Description: Name for trigger that triggers landing crawler
+    Type: String
+    Default: avujic-crawler-landing-trigger
+  GlueCrawlerLandingName:
+    Description: Name for crawler that crawls s3 landing bucket
+    Type: String
+    Default: avujic-crawler-landing
+  GlueCrawlerDatalakeTriggerName:
+    Description: Name for trigger that triggers datalake crawler
+    Type: String
+    Default: avujic-crawler-datalake-trigger
+  GlueCrawlerDatalakeName:
+    Description: Name for crawler that crawls s3 datalake bucket
+    Type: String
+    Default: avujic-crawler-datalake
+  GlueJobTriggerName:
+    Description: Name for trigger that triggers glue job
+    Type: String
+    Default: avujic-job-trigger
+
+Resources: 
+  AvujicAcademyGlueRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref GlueJobRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "glue.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        ['arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole']
+      Policies:
+        - PolicyName: "S3BucketAccessPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: 
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3BucketData}/*"
+                  - !Sub "arn:aws:s3:::${S3BucketScripts}/*"
+
+  AvujicGlueWorkflow:
+      Type: AWS::Glue::Workflow
+      Properties: 
+        Description: 'avujic Academy workflow from CloudFormation'
+        Name: 'avujic-academy-workflow-cicd'
+
+  AvujicLandingDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref GlueDatabaseLandingName
+        Description: "Cloud Formation landing database"
+        LocationUri: !Sub "s3://${S3BucketData}/imdb/landing"
+
+  AvujicDatalakeDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref GlueDatabaseDatalakeName
+        Description: "Cloud Formation datalake database"
+        LocationUri: !Sub "s3://${S3BucketData}/imdb/datalake"
+ 
+  AvujicLandingCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Ref GlueCrawlerLandingName
+      Role: !GetAtt AvujicAcademyGlueRole.Arn
+      DatabaseName: !Ref AvujicLandingDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${S3BucketData}/imdb/landing"
+      SchemaChangePolicy:
+        UpdateBehavior: "UPDATE_IN_DATABASE"
+        DeleteBehavior: "LOG"
+
+  AvujicDatalakeCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Ref GlueCrawlerDatalakeName
+      Role: !GetAtt AvujicAcademyGlueRole.Arn
+      DatabaseName: !Ref AvujicDatalakeDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${S3BucketData}/imdb/datalake"
+      SchemaChangePolicy:
+        UpdateBehavior: "UPDATE_IN_DATABASE"
+        DeleteBehavior: "LOG"
+
+  AvujicGlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: 'glueetl'
+        ScriptLocation: !Sub "s3://${S3BucketScripts}/glue/${GlueJobName}.py"
+        PythonVersion: '3'
+      DefaultArguments:
+        "--JOB_NAME": !Ref GlueJobName
+        "--GlueDatabaseLandingName": !Ref GlueDatabaseLandingName
+        "--S3BucketData": !Ref S3BucketData
+      Name: !Ref GlueJobName
+      Description: "Read landing data catalog and save to s3 datalake .parquet"
+      Role: !GetAtt AvujicAcademyGlueRole.Arn
+      Timeout: 480
+      WorkerType: G.1X
+      NumberOfWorkers: 2
+      GlueVersion: '4.0'
+
+  GlueCrawlerLandingTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Ref GlueCrawlerLandingTriggerName
+      Type: SCHEDULED
+      Description: 'Start landing crawler at 9:00'
+      WorkflowName: !Ref AvujicGlueWorkflow
+      StartOnCreation: true
+      Schedule: 'cron(0 9 * * ? *)'
+      Actions:
+        - CrawlerName: !Ref AvujicLandingCrawler
+
+  GlueCrawlerJobTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Ref GlueJobTriggerName
+      Type: CONDITIONAL
+      Description: 'Start glue job after landing crawler'
+      WorkflowName: !Ref AvujicGlueWorkflow
+      StartOnCreation: true
+      Actions:
+        - JobName: !Ref AvujicGlueJob
+      Predicate:
+        Logical: 'ANY'
+        Conditions:
+          - LogicalOperator: 'EQUALS'
+            CrawlerName: !Ref AvujicLandingCrawler
+            CrawlState: 'SUCCEEDED'
+
+  GlueCrawlerDatalakeTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Ref GlueCrawlerDatalakeTriggerName
+      Type: CONDITIONAL
+      Description: 'Start glue job after landing crawler'
+      WorkflowName: !Ref AvujicGlueWorkflow
+      StartOnCreation: true
+      Actions:
+        - CrawlerName: !Ref AvujicDatalakeCrawler
+      Predicate:
+        Logical: 'ANY'
+        Conditions:
+          - LogicalOperator: 'EQUALS'
+            JobName: !Ref AvujicGlueJob
+            State: 'SUCCEEDED'
